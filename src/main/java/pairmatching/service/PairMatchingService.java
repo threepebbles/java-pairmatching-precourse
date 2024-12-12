@@ -58,24 +58,6 @@ public class PairMatchingService {
         }
     }
 
-    public void retrieveMatching() {
-        OutputView.printMissionList();
-        RetrieveMatchingRequest request = InputView.scanRetrieveMatching();
-        PairMatchingResult result = PairMatchingResultRepository.find(request.getCourse(), request.getLevel(),
-                request.getMission());
-        if (result == null) {
-            System.out.println("[ERROR] 매칭 이력이 없습니다.");
-            return;
-        }
-        OutputView.printPairMatchingResult(result);
-    }
-
-    public void clearMatching() {
-        PairMatchingResultRepository.dropAll();
-        System.out.println("초기화 되었습니다.");
-    }
-
-
     private PairMatchingResult matchingPairs(Course course, Level level, Mission mission) {
         List<Pair> pairs = new ArrayList<>();
         List<String> crewNames = CrewRepository.findAll().stream().filter(c -> c.getCourse() == course)
@@ -101,5 +83,22 @@ public class PairMatchingService {
                     .toList();
             crew.saveHistory(level, friends);
         }
+    }
+
+    public void retrieveMatching() {
+        OutputView.printMissionList();
+        RetrieveMatchingRequest request = InputView.scanRetrieveMatching();
+        PairMatchingResult result = PairMatchingResultRepository.find(request.getCourse(), request.getLevel(),
+                request.getMission());
+        if (result == null) {
+            System.out.println("[ERROR] 매칭 이력이 없습니다.");
+            return;
+        }
+        OutputView.printPairMatchingResult(result);
+    }
+
+    public void clearMatching() {
+        PairMatchingResultRepository.dropAll();
+        System.out.println("초기화 되었습니다.");
     }
 }

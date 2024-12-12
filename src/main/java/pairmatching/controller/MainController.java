@@ -19,6 +19,7 @@ public class MainController {
 
     private static final String END_OPTION = "Q";
     private static final Map<String, Runnable> OPTIONS = new HashMap<>();
+    private static final int PAIR_MATCHING_RETRY_LIMIT = 3;
 
     public MainController() {
         initializeCrews();
@@ -54,7 +55,11 @@ public class MainController {
             if (!keepMatchingOrNot(request.getCourse(), request.getLevel(), request.getMission())) {
                 continue;
             }
-            PairMatchingResult result = solvePairMatchingResultWithLimit(request, 3);
+            PairMatchingResult result = solvePairMatchingResultWithLimit(request, PAIR_MATCHING_RETRY_LIMIT);
+            if (result == null) {
+                System.out.println("[ERROR] 페어 매칭 재시도 횟수 " + PAIR_MATCHING_RETRY_LIMIT + "번을 초과하여 매칭에 실패했습니다.");
+                continue;
+            }
             PairMatchingResultRepository.put(result);
             OutputView.printPairMatchingResult(result);
             return;
@@ -70,9 +75,14 @@ public class MainController {
     }
 
     public PairMatchingResult solvePairMatchingResultWithLimit(MatchingTargetRequest request, int count) {
-        return (PairMatchingResult) RetryHandler.retryUntilSuccessWithReturn(count, () -> {
-            return PairMatchingService.matchingPairs(request.getCourse(), request.getLevel(), request.getMission());
-        });
+        try {
+            return (PairMatchingResult) RetryHandler.retryUntilSuccessWithReturn(count,
+                    () -> PairMatchingService.matchingPairs(request.getCourse(), request.getLevel(),
+                            request.getMission())
+            );
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 
     public void retrieveMatching() {

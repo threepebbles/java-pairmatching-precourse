@@ -11,7 +11,8 @@ import pairmatching.util.RetryHandler;
 
 public class InputView {
     private static final List<String> OPTIONS = List.of("1", "2", "3", "Q");
-    private static final List<String> YES_OR_NO = List.of("네", "아니오");
+    private static final String YES = "네";
+    private static final String NO = "아니오";
     private static final String SELECT_OPTIONS_SCREEN = """
             기능을 선택하세요.
             1. 페어 매칭
@@ -85,15 +86,15 @@ public class InputView {
     }
 
     private static void validateYesOrNo(String inp) {
-        if (!YES_OR_NO.contains(inp)) {
+        if (!List.of(YES, NO).contains(inp)) {
             throw new IllegalArgumentException("[ERROR] 올바르지 않은 입력입니다.");
         }
     }
 
     private static Boolean convertYesOrNo(String inp) {
-        if (Objects.equals(inp, "네")) {
+        if (Objects.equals(inp, YES)) {
             return true;
-        } else if (Objects.equals(inp, "아니오")) {
+        } else if (Objects.equals(inp, NO)) {
             return false;
         }
         throw new IllegalArgumentException("[ERROR] 올바르지 않은 입력입니다.");

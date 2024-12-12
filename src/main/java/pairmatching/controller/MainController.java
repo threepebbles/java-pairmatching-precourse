@@ -25,8 +25,7 @@ public class MainController {
         initializeCrews();
         initializeOptions();
     }
-
-
+    
     private void initializeCrews() {
         ResourceLoader.loadBackendCrews();
         ResourceLoader.loadFrontendCrews();
@@ -65,7 +64,7 @@ public class MainController {
         }
     }
 
-    public boolean keepMatchingOrNot(Course course, Level level, Mission mission) {
+    private boolean keepMatchingOrNot(Course course, Level level, Mission mission) {
         if (PairMatchingResultRepository.find(course, level, mission)
                 != null) {
             return InputView.scanRematching();
@@ -73,7 +72,7 @@ public class MainController {
         return true;
     }
 
-    public PairMatchingResult solvePairMatchingResultWithLimit(MatchingTargetRequest request, int count) {
+    private PairMatchingResult solvePairMatchingResultWithLimit(MatchingTargetRequest request, int count) {
         try {
             return (PairMatchingResult) RetryHandler.retryUntilSuccessWithReturn(count,
                     () -> PairMatchingService.matchingPairs(request.getCourse(), request.getLevel(),

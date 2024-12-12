@@ -57,7 +57,7 @@ public class MainController {
             }
             PairMatchingResult result = solvePairMatchingResultWithLimit(request, PAIR_MATCHING_RETRY_LIMIT);
             if (result == null) {
-                continue;
+                break;
             }
             PairMatchingResultRepository.put(result);
             OutputView.printPairMatchingResult(result);

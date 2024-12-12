@@ -99,5 +99,6 @@ public class MainController {
 
     public void clearMatching() {
         PairMatchingResultRepository.dropAll();
+        System.out.println("초기화 되었습니다.");
     }
 }

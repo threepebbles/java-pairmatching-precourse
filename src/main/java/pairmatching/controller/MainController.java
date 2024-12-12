@@ -13,11 +13,11 @@ public class MainController {
 
     public MainController(PairMatchingService pairMatchingService) {
         this.pairMatchingService = pairMatchingService;
-        initializeCrews();
+        initializeCrewRepository();
         initializeOptions();
     }
 
-    private void initializeCrews() {
+    private void initializeCrewRepository() {
         ResourceLoader.loadBackendCrews();
         ResourceLoader.loadFrontendCrews();
     }

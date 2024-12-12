@@ -29,5 +29,6 @@ public class OutputView {
             List<String> crewNames = p.getCrew().stream().map(Crew::getName).toList();
             System.out.println(String.join(" : ", crewNames));
         }
+        System.out.println();
     }
 }

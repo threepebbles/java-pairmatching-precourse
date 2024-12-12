@@ -13,8 +13,8 @@ public enum Mission {
     DISTRIBUTION(Level.LEVEL4, "배포"),
     NOTHING(null, null);
 
-    private Level level;
-    private String name;
+    private final Level level;
+    private final String name;
 
     Mission(Level level, String name) {
         this.level = level;

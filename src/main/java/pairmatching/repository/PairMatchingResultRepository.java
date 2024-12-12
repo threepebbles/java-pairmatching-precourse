@@ -10,7 +10,7 @@ import pairmatching.domain.PairMatchingResult;
 public class PairMatchingResultRepository {
     private static final List<PairMatchingResult> RESULTS = new ArrayList<>();
 
-    public static void add(PairMatchingResult result) {
+    public static void put(PairMatchingResult result) {
         // 기존 이력 있으면 삭제
         RESULTS.removeIf(r -> r.getCourse() == result.getCourse()
                 && r.getLevel() == result.getLevel()

@@ -3,7 +3,16 @@ package pairmatching.controller;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import pairmatching.domain.Course;
+import pairmatching.domain.Level;
+import pairmatching.domain.Mission;
+import pairmatching.domain.PairMatchingResult;
+import pairmatching.repository.PairMatchingResultRepository;
+import pairmatching.service.PairMatchingService;
+import pairmatching.util.RetryHandler;
 import pairmatching.view.InputView;
+import pairmatching.view.MatchingTargetRequest;
+import pairmatching.view.OutputView;
 
 public class MainController {
 
@@ -14,6 +23,7 @@ public class MainController {
         initializeCrews();
         initializeOptions();
     }
+
 
     private void initializeCrews() {
         ResourceLoader.loadBackendCrews();
@@ -28,7 +38,7 @@ public class MainController {
 
     public void run() {
         while (true) {
-            String option = InputView.requestOption();
+            String option = InputView.scanOption();
             if (Objects.equals(option, END_OPTION)) {
                 return;
             }
@@ -37,7 +47,31 @@ public class MainController {
     }
 
     public void pairMatching() {
-        System.out.println("페어매칭 할거다");
+        OutputView.printMissionList();
+        while (true) {
+            MatchingTargetRequest request = InputView.scanMatchingTarget();
+            if (!keepMatchingOrNot(request.getCourse(), request.getLevel(), request.getMission())) {
+                continue;
+            }
+            PairMatchingResult result = solvePairMatchingResultWithLimit(request, 3);
+            PairMatchingResultRepository.put(result);
+            OutputView.printPairMatchingResult(result);
+            return;
+        }
+    }
+
+    public boolean keepMatchingOrNot(Course course, Level level, Mission mission) {
+        if (PairMatchingResultRepository.find(course, level, mission)
+                != null) {
+            return InputView.scanRematching();
+        }
+        return true;
+    }
+
+    public PairMatchingResult solvePairMatchingResultWithLimit(MatchingTargetRequest request, int count) {
+        return (PairMatchingResult) RetryHandler.retryUntilSuccessWithReturn(count, () -> {
+            return PairMatchingService.matchingPairs(request.getCourse(), request.getLevel(), request.getMission());
+        });
     }
 
     public void retrieveMatching() {

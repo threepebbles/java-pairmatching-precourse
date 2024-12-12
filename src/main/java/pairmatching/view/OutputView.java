@@ -1,5 +1,10 @@
 package pairmatching.view;
 
+import java.util.List;
+import pairmatching.domain.Crew;
+import pairmatching.domain.Pair;
+import pairmatching.domain.PairMatchingResult;
+
 public class OutputView {
     private static final String MISSION_LIST_SCREEN = """
             #############################################
@@ -15,5 +20,14 @@ public class OutputView {
 
     public static void printMissionList() {
         System.out.print(MISSION_LIST_SCREEN);
+    }
+
+    public static void printPairMatchingResult(PairMatchingResult result) {
+        System.out.println("페어 매칭 결과입니다.");
+        List<Pair> pairs = result.getPairs();
+        for (Pair p : pairs) {
+            List<String> crewNames = p.getCrew().stream().map(Crew::getName).toList();
+            System.out.println(String.join(" : ", crewNames));
+        }
     }
 }

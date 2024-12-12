@@ -17,21 +17,29 @@ public class Crew {
         this.name = name;
     }
 
-    public void saveHistory(Level level, List<Crew> crews) {
-        List<Crew> toBeUpdated = new ArrayList<>();
+    public void checkHistory(Level level, List<Crew> crews) {
+        List<Crew> olds = new ArrayList<>();
         if (history.containsKey(level)) {
-            toBeUpdated.addAll(history.get(level));
+            olds.addAll(history.get(level));
         }
-        for (Crew old : toBeUpdated) {
+        for (Crew old : olds) {
             if (crews.stream().anyMatch(c -> c.equals(old))) {
                 throw new IllegalArgumentException(
                         "[ERROR] " + name + "<->" + old.getName() + ": 같은 레벨에서 이미 페어로 만난 적이 있는 크루입니다.");
             }
         }
+    }
+
+    public void saveHistory(Level level, List<Crew> crews) {
+        List<Crew> toBeUpdated = new ArrayList<>();
+        if (history.containsKey(level)) {
+            toBeUpdated.addAll(history.get(level));
+        }
+        checkHistory(level, crews);
         toBeUpdated.addAll(crews);
         history.put(level, toBeUpdated);
     }
-    
+
     public Course getCourse() {
         return course;
     }

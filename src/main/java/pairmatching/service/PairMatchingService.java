@@ -21,6 +21,15 @@ import pairmatching.view.RetrieveMatchingRequest;
 public class PairMatchingService {
     private static final int PAIR_MATCHING_RETRY_LIMIT = 3;
 
+    private static void checkDuplicate(Level level, List<Crew> crews) {
+        for (Crew crew : crews) {
+            List<Crew> friends = crews.stream()
+                    .filter(c -> !Objects.equals(c.getName(), crew.getName()))
+                    .toList();
+            crew.checkHistory(level, friends);
+        }
+    }
+
     public void pairMatching() {
         OutputView.printMissionList();
         while (true) {
@@ -60,6 +69,12 @@ public class PairMatchingService {
 
     private PairMatchingResult matchingPairs(Course course, Level level, Mission mission) {
         List<Pair> pairs = new ArrayList<>();
+        solvePairs(course, level, pairs);
+        savePairs(level, pairs);
+        return new PairMatchingResult(course, level, mission, pairs);
+    }
+
+    private void solvePairs(Course course, Level level, List<Pair> pairs) {
         List<String> crewNames = CrewRepository.findAll().stream().filter(c -> c.getCourse() == course)
                 .map(Crew::getName).toList();
         List<String> shuffled = Randoms.shuffle(crewNames); // 섞인 크루 이름 목록
@@ -70,10 +85,15 @@ public class PairMatchingService {
             if (i == shuffled.size() - 2 && shuffled.size() % 2 != 0) {
                 pair.add(CrewRepository.find(course, shuffled.getLast()));
             }
-            connectCrews(level, pair);
+            checkDuplicate(level, pair);
             pairs.add(new Pair(pair));
         }
-        return new PairMatchingResult(course, level, mission, pairs);
+    }
+
+    private void savePairs(Level level, List<Pair> pairs) {
+        for (Pair pair : pairs) {
+            connectCrews(level, pair.getCrews());
+        }
     }
 
     private void connectCrews(Level level, List<Crew> crews) {

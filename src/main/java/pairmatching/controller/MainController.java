@@ -87,15 +87,14 @@ public class MainController {
 
     public void retrieveMatching() {
         OutputView.printMissionList();
-        RetryHandler.retryUntilSuccess(() -> {
-            RetrieveMatchingRequest request = InputView.scanRetrieveMatching();
-            PairMatchingResult result = PairMatchingResultRepository.find(request.getCourse(), request.getLevel(),
-                    request.getMission());
-            if (result == null) {
-                throw new IllegalArgumentException("[ERROR] 매칭 이력이 없습니다.");
-            }
-            OutputView.printPairMatchingResult(result);
-        });
+        RetrieveMatchingRequest request = InputView.scanRetrieveMatching();
+        PairMatchingResult result = PairMatchingResultRepository.find(request.getCourse(), request.getLevel(),
+                request.getMission());
+        if (result == null) {
+            System.out.println("[ERROR] 매칭 이력이 없습니다.");
+            return;
+        }
+        OutputView.printPairMatchingResult(result);
     }
 
     public void clearMatching() {

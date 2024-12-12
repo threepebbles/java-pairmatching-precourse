@@ -11,7 +11,6 @@ public class PairMatchingResultRepository {
     private static final List<PairMatchingResult> RESULTS = new ArrayList<>();
 
     public static void put(PairMatchingResult result) {
-        // 기존 이력 있으면 삭제
         RESULTS.removeIf(r -> r.getCourse() == result.getCourse()
                 && r.getLevel() == result.getLevel()
                 && r.getMission() == result.getMission());
@@ -26,10 +25,6 @@ public class PairMatchingResultRepository {
             return null;
         }
         return target.getFirst();
-    }
-
-    public static List<PairMatchingResult> findAll() {
-        return RESULTS;
     }
 
     public static void dropAll() {

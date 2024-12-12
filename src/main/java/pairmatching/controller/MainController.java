@@ -57,7 +57,6 @@ public class MainController {
             }
             PairMatchingResult result = solvePairMatchingResultWithLimit(request, PAIR_MATCHING_RETRY_LIMIT);
             if (result == null) {
-                System.out.println("[ERROR] 페어 매칭 재시도 횟수 " + PAIR_MATCHING_RETRY_LIMIT + "번을 초과하여 매칭에 실패했습니다.");
                 continue;
             }
             PairMatchingResultRepository.put(result);
@@ -81,6 +80,7 @@ public class MainController {
                             request.getMission())
             );
         } catch (RuntimeException e) {
+            System.out.println("[ERROR] 페어 매칭 재시도 횟수 " + PAIR_MATCHING_RETRY_LIMIT + "번을 초과하여 매칭에 실패했습니다.");
             return null;
         }
     }

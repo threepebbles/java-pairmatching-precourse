@@ -36,7 +36,8 @@ public class Crew {
         }
         for (Crew old : toBeUpdated) {
             if (crews.stream().anyMatch(c -> c.equals(old))) {
-                throw new IllegalArgumentException("[ERROR] " + old + ": 같은 레벨에서 이미 페어로 만난 적이 있는 크루입니다.");
+                throw new IllegalArgumentException(
+                        "[ERROR] " + name + "<->" + old.getName() + ": 같은 레벨에서 이미 페어로 만난 적이 있는 크루입니다.");
             }
         }
         toBeUpdated.addAll(crews);

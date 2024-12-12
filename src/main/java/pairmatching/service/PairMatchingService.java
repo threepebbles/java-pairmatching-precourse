@@ -76,7 +76,7 @@ public class PairMatchingService {
     }
 
 
-    public PairMatchingResult matchingPairs(Course course, Level level, Mission mission) {
+    private PairMatchingResult matchingPairs(Course course, Level level, Mission mission) {
         List<Pair> pairs = new ArrayList<>();
         List<String> crewNames = CrewRepository.findAll().stream().filter(c -> c.getCourse() == course)
                 .map(Crew::getName).toList();
@@ -94,7 +94,7 @@ public class PairMatchingService {
         return new PairMatchingResult(course, level, mission, pairs);
     }
 
-    public void connectCrews(Level level, List<Crew> crews) {
+    private void connectCrews(Level level, List<Crew> crews) {
         for (Crew crew : crews) {
             List<Crew> friends = crews.stream()
                     .filter(c -> !Objects.equals(c.getName(), crew.getName()))

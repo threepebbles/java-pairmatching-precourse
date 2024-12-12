@@ -3,10 +3,10 @@ package pairmatching.domain;
 import java.util.List;
 
 public class PairMatchingResult {
-    private Course course;
-    private Level level;
-    private Mission mission;
-    private List<Pair> pairs;
+    private final Course course;
+    private final Level level;
+    private final Mission mission;
+    private final List<Pair> pairs;
 
     public PairMatchingResult(Course course, Level level, Mission mission, List<Pair> pairs) {
         this.course = course;

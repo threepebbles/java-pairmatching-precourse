@@ -7,10 +7,10 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Crew {
-    private Course course;
-    private String name;
+    private final Course course;
+    private final String name;
 
-    private Map<Level, List<Crew>> history = new HashMap<>();
+    private final Map<Level, List<Crew>> history = new HashMap<>();
 
     public Crew(Course course, String name) {
         this.course = course;

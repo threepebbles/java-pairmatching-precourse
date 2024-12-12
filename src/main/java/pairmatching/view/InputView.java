@@ -43,7 +43,7 @@ public class InputView {
         if (OPTIONS.contains(inp)) {
             return;
         }
-        throw new IllegalArgumentException("[ERROR] 올바르지 않은 입력입니다. 다시 입력해 주세요.");
+        throw new IllegalArgumentException("[ERROR] 올바르지 않은 입력입니다.");
     }
 
     public static MatchingTargetRequest scanMatchingTarget() {
@@ -62,16 +62,16 @@ public class InputView {
         List<String> parsed = Arrays.stream(inp.split(",", -1))
                 .map(String::strip).toList();
         if (parsed.size() != 3) {
-            throw new IllegalArgumentException("[ERROR] 올바르지 않은 포맷입니다. 다시 입력해 주세요.");
+            throw new IllegalArgumentException("[ERROR] 올바르지 않은 포맷입니다.");
         }
         if (!Course.isExist(parsed.get(0))
                 || !Level.isExist(parsed.get(1))) {
-            throw new IllegalArgumentException("[ERROR] 존재하지 않는 과정, 레벨명입니다. 다시 입력해 주세요.");
+            throw new IllegalArgumentException("[ERROR] 존재하지 않는 과정, 레벨명입니다.");
         }
         if (!Mission.isExist(
                 Level.value(parsed.get(1)),
                 parsed.get(2))) {
-            throw new IllegalArgumentException("[ERROR] 올바르지 않은 레벨<->미션명 관계입니다. 다시 입력해 주세요.");
+            throw new IllegalArgumentException("[ERROR] 올바르지 않은 레벨<->미션명 관계입니다.");
         }
     }
 
@@ -86,7 +86,7 @@ public class InputView {
 
     private static void validateYesOrNo(String inp) {
         if (!YES_OR_NO.contains(inp)) {
-            throw new IllegalArgumentException("[ERROR] 올바르지 않은 입력입니다. 다시 입력해 주세요.");
+            throw new IllegalArgumentException("[ERROR] 올바르지 않은 입력입니다.");
         }
     }
 

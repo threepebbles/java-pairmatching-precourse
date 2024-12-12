@@ -26,7 +26,7 @@ public class OutputView {
         System.out.println("페어 매칭 결과입니다.");
         List<Pair> pairs = result.getPairs();
         for (Pair p : pairs) {
-            List<String> crewNames = p.getCrew().stream().map(Crew::getName).toList();
+            List<String> crewNames = p.getCrews().stream().map(Crew::getName).toList();
             System.out.println(String.join(" : ", crewNames));
         }
         System.out.println();

@@ -89,6 +89,6 @@ public class MainController {
     }
 
     public void clearMatching() {
-        
+        PairMatchingResultRepository.dropAll();
     }
 }

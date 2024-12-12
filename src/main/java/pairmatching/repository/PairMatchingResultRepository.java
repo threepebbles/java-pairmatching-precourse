@@ -31,4 +31,8 @@ public class PairMatchingResultRepository {
     public static List<PairMatchingResult> findAll() {
         return RESULTS;
     }
+
+    public static void dropAll() {
+        RESULTS.clear();
+    }
 }

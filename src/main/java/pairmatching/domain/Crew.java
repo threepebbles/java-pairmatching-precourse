@@ -17,18 +17,6 @@ public class Crew {
         this.name = name;
     }
 
-    public Course getCourse() {
-        return course;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Map<Level, List<Crew>> getHistory() {
-        return history;
-    }
-
     public void saveHistory(Level level, List<Crew> crews) {
         List<Crew> toBeUpdated = new ArrayList<>();
         if (history.containsKey(level)) {
@@ -43,6 +31,19 @@ public class Crew {
         toBeUpdated.addAll(crews);
         history.put(level, toBeUpdated);
     }
+    
+    public Course getCourse() {
+        return course;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Map<Level, List<Crew>> getHistory() {
+        return history;
+    }
+
 
     @Override
     public boolean equals(Object obj) {

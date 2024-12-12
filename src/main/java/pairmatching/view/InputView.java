@@ -19,7 +19,7 @@ public class InputView {
             3. 페어 초기화
             Q. 종료
             """;
-    
+
     private static final String ENTER_MISSION_INFO_SCREEN = """
             과정, 레벨, 미션을 선택하세요.
             ex) 백엔드, 레벨1, 자동차경주
@@ -50,7 +50,7 @@ public class InputView {
         return (MatchingTargetRequest) RetryHandler.retryUntilSuccessWithReturn(() -> {
             System.out.print(ENTER_MISSION_INFO_SCREEN);
             String inp = Console.readLine();
-            validateMatchingTarget(inp);
+            validateCourseLevelMission(inp);
             List<String> parsed = Arrays.stream(inp.split(",", -1))
                     .map(String::strip).toList();
             return new MatchingTargetRequest(Course.value(parsed.get(0)), Level.value(parsed.get(1)),
@@ -58,7 +58,7 @@ public class InputView {
         });
     }
 
-    private static void validateMatchingTarget(String inp) {
+    private static void validateCourseLevelMission(String inp) {
         List<String> parsed = Arrays.stream(inp.split(",", -1))
                 .map(String::strip).toList();
         if (parsed.size() != 3) {
@@ -97,5 +97,17 @@ public class InputView {
             return false;
         }
         throw new IllegalArgumentException("[ERROR] 올바르지 않은 입력입니다.");
+    }
+
+    public static RetrieveMatchingRequest scanRetrieveMatching() {
+        return (RetrieveMatchingRequest) RetryHandler.retryUntilSuccessWithReturn(() -> {
+            System.out.print(ENTER_MISSION_INFO_SCREEN);
+            String inp = Console.readLine();
+            validateCourseLevelMission(inp);
+            List<String> parsed = Arrays.stream(inp.split(",", -1))
+                    .map(String::strip).toList();
+            return new RetrieveMatchingRequest(Course.value(parsed.get(0)), Level.value(parsed.get(1)),
+                    Mission.value(Level.value(parsed.get(1)), parsed.get(2)));
+        });
     }
 }

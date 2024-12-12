@@ -13,6 +13,7 @@ import pairmatching.util.RetryHandler;
 import pairmatching.view.InputView;
 import pairmatching.view.MatchingTargetRequest;
 import pairmatching.view.OutputView;
+import pairmatching.view.RetrieveMatchingRequest;
 
 public class MainController {
 
@@ -75,10 +76,19 @@ public class MainController {
     }
 
     public void retrieveMatching() {
-        System.out.println("조회할거다");
+        OutputView.printMissionList();
+        RetryHandler.retryUntilSuccess(() -> {
+            RetrieveMatchingRequest request = InputView.scanRetrieveMatching();
+            PairMatchingResult result = PairMatchingResultRepository.find(request.getCourse(), request.getLevel(),
+                    request.getMission());
+            if (result == null) {
+                throw new IllegalArgumentException("[ERROR] 매칭 이력이 없습니다.");
+            }
+            OutputView.printPairMatchingResult(result);
+        });
     }
 
     public void clearMatching() {
-        System.out.println("초기화 할거다");
+        
     }
 }
